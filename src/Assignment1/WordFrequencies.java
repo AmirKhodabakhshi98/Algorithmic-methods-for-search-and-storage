@@ -1,3 +1,4 @@
+
 package Assignment1;
 
 import java.io.BufferedReader;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+//Amir Khodabakhshi
 public class WordFrequencies {
 
 
