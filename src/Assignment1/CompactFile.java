@@ -3,22 +3,28 @@ package Assignment1;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 //Amir Khodabakhshi
 public class CompactFile {
 
     StringBuilder output;
 
-    public CompactFile(String filename, int B, int lo, int hi) throws IOException {
+    public CompactFile(String filename, int b, int lo, int hi) throws IOException {
 
-        String input = readFile(filename);
-        setValues(input, B, lo, hi);
+        String input = readFile(filename,b);
+        setValues(input, b, lo, hi);
         writeFile();
 
     }
 
 
-    private void setValues(String input, int B, int lo, int hi) throws IOException {
+    //A*256^3+(B*256^2+(C*256^1+D)
+
+    private void setValues(String input, int b, int lo, int hi) throws IOException {
 
         char[] chars = input.toCharArray();
         String[] binaryString = new String[chars.length];
@@ -57,10 +63,10 @@ public class CompactFile {
         //nearest byte and current nbr of bits. \0 is the default char and is replaced by 0s
         output.append(new String(new char[nearestByteMultiple-nbrOfBits]).replace("\0", "0"));
         String str = output.toString();
-        
 
 
-        System.out.println(output.toString());
+
+     //   System.out.println(output.toString());
 
 
 
@@ -78,24 +84,72 @@ public class CompactFile {
         fileWriter.close();
     }
 
-    private String readFile(String filename) throws IOException {
+    private String[] readFile(String filename, int b) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(filename));
         StringBuilder sb = new StringBuilder();
         String line = "";
 
-        while ((line = br.readLine()) != null){
-            sb.append(line);
-        }
-        br.close();
+        //   while ((line = br.readLine()) != null){
+        //        sb.append(line);
+        //    }
+        //    br.close();
 
-        line = sb.toString();
-        return line;
+        Path path = Paths.get(filename);
+        byte[] data = Files.readAllBytes(path);
+
+        String[] array = new String[(int) Math.ceil(((double) data.length / b))]; // funkar d alltid?
+
+        int j=0;
+        switch (b) {
+            case 1:
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = String.valueOf(data[i]);
+                }
+
+                break;
+
+            case 2:
+                for (int i=0; i<data.length; i+=b){
+
+                    int result16 = ((data[i] & 0xff) << 8) | (data[i + 1] & 0xff);
+                    array[j] = String.valueOf(result16);
+                    j++;
+                }
+
+                break;
+
+            case 3:
+                for (int i=0; i<data.length; i+=b){
+
+                    int result24 = ((data[i] & 0xff) << 16) | ((data[i+1] & 0xff) << 8) | (data[i+2] & 0xff);
+                    array[j] = String.valueOf(result24);
+                    j++;
+                }
+                break;
+
+            case 4:
+                for (int i=0; i<data.length; i+=b){
+
+                    int result32 = ((data[i] & 0xff) << 24) | ((data[i+1] & 0xff) << 16) | ((data[i+2] & 0xff) << 8) | (data[i+3] & 0xff);
+                    array[j] = String.valueOf(result32);
+                    j++;
+                }
+                break;
+        }
+
+         System.out.println(Arrays.toString(array));
+
+        return array;
 
     }
 
 
+
+
+
+
     public static void main(String[] args) throws IOException {
-        new CompactFile("files/abba.txt",1,97,101);
+        new CompactFile("files/abba.txt",4,97,101);
     }
 
 }
