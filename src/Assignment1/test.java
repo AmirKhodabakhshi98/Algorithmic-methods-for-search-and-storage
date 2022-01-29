@@ -9,29 +9,32 @@ import java.util.Arrays;
 public class test {
 
     public static void main(String[] args) throws IOException {
-     //   String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\abba-1-97-101";
+        String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\abba-1-97-101";
     //   String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\abba-4-1630000000-1689999999";
-        String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\test";
+     //  String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\test";
 
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line ="";
 
         InputStream is = new FileInputStream(file);
         int byteread = -1;
 
+        byte[] data = Files.readAllBytes(Paths.get(file));
+        System.out.println(data.length);
 
- //       while ((line=br.readLine()) != null){
-    //        System.out.println(line);
-   //     }
 
-        while ((byteread = is.read()) != -1){
+        while ((byteread = is.read()) != -1){ //läser in den som positiv int. vkt angående hur
+            //d kmr säg att d skriva "signed" o ser negativt ut vid skrivning men läses in positivt.
             System.out.print(byteread + " ");
         }
 
-     //   for (int i=0; i<data.length; i++){
-        //    System.out.println(data[i]);
-       //     System.out.println(Arrays.toString(data));
-       // }
+
+
+      //  BufferedReader br = new BufferedReader(new FileReader(file));
+      //  String line ="";
+        //       while ((line=br.readLine()) != null){
+        //        System.out.println(line);
+        //     }
+
+
 
     }
 }

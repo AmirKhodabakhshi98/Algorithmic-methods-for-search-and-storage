@@ -15,18 +15,136 @@ public class CompactFile {
 
     public CompactFile(String filename, int b, int lo, int hi) throws IOException {
 
-        String input = readFile(filename,b);
-        setValues(input, b, lo, hi);
-        writeFile();
+     //   String[] input = readFile(filename,b);
+        int[] input = compression(filename, b, lo, hi);
+      //  setValues(input, b, lo, hi);
+    //    writeFile();
 
     }
 
 
+
+    private int[] compression(String filename, int b, int lo, int hi) throws IOException {
+
+
+        Path path = Paths.get(filename);
+        byte[] data = Files.readAllBytes(path);
+        int[] input = new int[(int) Math.ceil(((double) data.length / b))]; // funkar d alltid?
+
+        int j=0; //to traverse the input array for b>1
+
+        //for loops traverse input array and based on b put together bits to a single value.
+        switch (b) {
+            case 1:
+                for (int i = 0; i < input.length; i++) {
+                    input[i] = data[i]-lo;
+                }
+
+                break;
+
+            case 2:
+                for (int i=0; i<data.length; i+=b){
+
+                    int result16 = ((data[i] & 0xff) << 8) | (data[i + 1] & 0xff);
+                    input[j] = result16-lo;
+                    j++;
+                }
+
+                break;
+
+            case 3:
+                for (int i=0; i<data.length; i+=b){
+
+                    int result24 = ((data[i] & 0xff) << 16) | ((data[i+1] & 0xff) << 8) | (data[i+2] & 0xff);
+                    input[j] = result24 - lo;
+                    j++;
+                }
+                break;
+
+            case 4:
+                for (int i=0; i<data.length; i+=b){
+
+                    int result32 = ((data[i] & 0xff) << 24) | ((data[i+1] & 0xff) << 16) | ((data[i+2] & 0xff) << 8) | (data[i+3] & 0xff);
+          //          System.out.println(result32);
+                    input[j] = result32-lo;
+        //            System.out.println(input[j]);
+                    j++;
+                }
+                break;
+        }
+
+        System.out.println(Arrays.toString(input));
+
+
+        int minBits = (int) Math.ceil (Math.log(hi-lo+1) / Math.log(2)); //minimum nbr of bits required is calculated as 2-log of hi-lo-1 rounded up
+        int nbrOfBits =  input.length * minBits; //total nbr of bits required to represent the trimmed input
+        int nearest8Multiple =  8 * (int) (Math.ceil((nbrOfBits)/8.0)); //closest multiple of 8, to know how many 0s to pad
+
+        StringBuilder sb = new StringBuilder(nbrOfBits);
+
+        for (int i=0; i<input.length; i++){
+
+            //left pad the binary nbrs with 0s to reach minimum nbr of required bits.
+            String bits = String.format("%" + minBits + "s",  Integer.toBinaryString((input[i]))) //left pad with spaces to reach minbit
+                    .replace(' ', '0'); //replace spaces with 0
+            sb.append(bits);
+        }
+
+
+        //pad output with 0s to reach nearest multiple of 8
+        if (nbrOfBits != nearest8Multiple){
+       //     sb.append("0".repeat(Math.max(0, nearest8Multiple - nbrOfBits)));
+            sb.append("0".repeat( nearest8Multiple - nbrOfBits));
+        }
+
+        String str = sb.toString();
+        System.out.println(str.toString());
+
+        byte[] output = new byte[nearest8Multiple/8];
+
+        output[0] = (byte) Integer.parseInt(str.substring(26,26+8),2);
+
+        int index = 0;
+        for (int i=0; i<nearest8Multiple; i +=8){
+
+            output[index] = (byte) Integer.parseInt(str.substring(i,i+8),2);
+            index++;
+        }
+
+
+        System.out.println(Arrays.toString(output));
+
+   //     FileWriter fileWriter = new FileWriter("E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\test");
+       // fileWriter.write(String.valueOf(output));
+      //  fileWriter.close();
+
+        Files.write(Paths.get("E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\test"), output);
+
+        return input;
+
+    }
+
+
+
+
     //A*256^3+(B*256^2+(C*256^1+D)
 
-    private void setValues(String input, int b, int lo, int hi) throws IOException {
+    private void setValues(String[] input, int b, int lo, int hi) throws IOException {
 
-        char[] chars = input.toCharArray();
+        //minimum nbr of bits required is calculated as 2-log of hi-lo-1 rounded up
+        int minbits = (int) Math.ceil (Math.log(hi-lo+1) / Math.log(2));
+
+
+   //     int nbrOfBits = minbits * input.length; //?
+     //   int nearestByteMultiple =  8 * (int) (Math.ceil((nbrOfBits)/8.0));
+
+        for (int i=0; i<input.length; i++){
+       //     input[i] = Integer.parseInt(input[i])-lo;
+
+        }
+
+        /*
+        char[] chars; = input.toCharArray();
         String[] binaryString = new String[chars.length];
 
         int minbits = (int) Math.ceil (Math.log(hi-lo+1) / Math.log(2)); //minimum nbr of bits required is calculated as 2-log of hi-lo-1 rounded up
@@ -69,6 +187,8 @@ public class CompactFile {
      //   System.out.println(output.toString());
 
 
+         */
+
 
     }
 
@@ -84,15 +204,9 @@ public class CompactFile {
         fileWriter.close();
     }
 
-    private String[] readFile(String filename, int b) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        StringBuilder sb = new StringBuilder();
-        String line = "";
 
-        //   while ((line = br.readLine()) != null){
-        //        sb.append(line);
-        //    }
-        //    br.close();
+
+    private String[] readFile(String filename, int b) throws IOException {
 
         Path path = Paths.get(filename);
         byte[] data = Files.readAllBytes(path);
@@ -133,6 +247,7 @@ public class CompactFile {
                     int result32 = ((data[i] & 0xff) << 24) | ((data[i+1] & 0xff) << 16) | ((data[i+2] & 0xff) << 8) | (data[i+3] & 0xff);
                     array[j] = String.valueOf(result32);
                     j++;
+                    System.out.println(result32);
                 }
                 break;
         }
@@ -149,7 +264,9 @@ public class CompactFile {
 
 
     public static void main(String[] args) throws IOException {
-        new CompactFile("files/abba.txt",4,97,101);
+        new CompactFile("files/abba.txt",1,97,101);
     }
+
+
 
 }
