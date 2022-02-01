@@ -25,8 +25,8 @@ public class WordFrequencies {
 
         while ((str = br.readLine()) !=null){
             sb.append(str).append(" ");
-
         }
+
         br.close();
 
         str = sb.toString();
