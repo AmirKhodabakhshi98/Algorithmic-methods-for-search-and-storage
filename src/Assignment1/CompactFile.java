@@ -23,7 +23,7 @@ public class CompactFile {
 
         Path path = Paths.get(filename);
         byte[] data = Files.readAllBytes(path);
-        int[] input = new int[(int) Math.ceil(((double) data.length / b))]; // funkar d alltid?
+        int[] input = new int[(int) Math.ceil(((double) data.length / b))]; //input array based on byta data and b size
 
         int j=0; //to traverse the input array for b>1
 
@@ -38,7 +38,6 @@ public class CompactFile {
             case 2:
                 for (int i=0; i<data.length; i+=b){
 
-                //    int result16 = ((data[i] & 0xff) << 8) | (data[i + 1] & 0xff);
                     int result16 = ((data[i]) << 8) | (data[i + 1]);
                     input[j] = result16-lo;
                     j++;
@@ -48,7 +47,6 @@ public class CompactFile {
             case 3:
                 for (int i=0; i<data.length; i+=b){
 
-            //        int result24 = ((data[i] & 0xff) << 16) | ((data[i+1] & 0xff) << 8) | (data[i+2] & 0xff);
                     int result24 = ((data[i]) << 16) | ((data[i+1]) << 8) | (data[i+2]);
                     input[j] = result24 - lo;
                     j++;
@@ -58,8 +56,7 @@ public class CompactFile {
             case 4:
                 for (int i=0; i<data.length; i+=b){
 
-                    //       int result32 = ((data[i]) << 24) | ((data[i+1] ) << 16) | ((data[i+2] ) << 8) | (data[i+3] );
-                    int result32 = ((data[i] & 0xff) << 24) | ((data[i+1] & 0xff) << 16) | ((data[i+2] & 0xff) << 8) | (data[i+3] & 0xff);
+                    int result32 = ((data[i]) << 24) | ((data[i+1] ) << 16) | ((data[i+2] ) << 8) | (data[i+3] );
                     input[j] = result32-lo;
                     j++;
                 }

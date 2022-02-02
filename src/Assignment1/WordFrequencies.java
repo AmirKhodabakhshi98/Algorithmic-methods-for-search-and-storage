@@ -23,6 +23,7 @@ public class WordFrequencies {
         StringBuilder sb = new StringBuilder();
         String str = "";
 
+        //read file content
         while ((str = br.readLine()) !=null){
             sb.append(str).append(" ");
         }
@@ -33,6 +34,7 @@ public class WordFrequencies {
 
         return str;
     }
+
 
     private String[] cleanInput(String str){
         str = str.toLowerCase();
