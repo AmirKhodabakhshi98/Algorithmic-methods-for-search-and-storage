@@ -1,0 +1,13 @@
+körs hela algoritmen i binärt?
+
+The former is in text format with the numbers in decimal digits (which means each line should be parsed into a number)
+dvs binärt?
+
+elr ska man omvandla binärt till integers o köra på d?
+
+
+getdigithandle är det som säger till metoden vad det är som ska sorteras typ när man kallar?
+
+vad ska radix outputta? string[] ?
+
+med ascii kmr stora bokstäver före små. äre meningen?!
