@@ -11,3 +11,8 @@ getdigithandle är det som säger till metoden vad det är som ska sorteras typ 
 vad ska radix outputta? string[] ?
 
 med ascii kmr stora bokstäver före små. äre meningen?!
+
+int elr Integer? kan input till radix va Integer[] ?
+
+
+key???
