@@ -1,0 +1,64 @@
+
+
+LSD STRING
+lsd.LsdRadixSort(arr,lsd.getChar,528,256);
+duration ms: 39544
+duration s: 39
+
+MSD STRING
+msd.MsdRadixSort(arr,msd.getInt,4,256);
+duration ms: 10242
+duration s: 10
+
+ARRAYSORT String
+duration ms: 1379
+duration s: 1
+
+
+
+LSD INT
+lsd.LsdRadixSort(arr,lsd.getInt,4,256);
+duration ms: 3390
+duration s: 3
+
+MSD INT
+msd.MsdRadixSort(arr,msd.getInt,4,256);
+duration ms: 2728
+duration s: 2
+
+ARRAYSORT INT
+duration ms: 2826
+duration s: 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LSD STRING
+duration s: 39
+
+MSD STRING
+duration s: 10
+
+ARRAYSORT String
+duration s: 1
+
+
+LSD INT
+duration s: 3
+
+MSD INT
+duration s: 2
+
+ARRAYSORT INT
+duration s: 2

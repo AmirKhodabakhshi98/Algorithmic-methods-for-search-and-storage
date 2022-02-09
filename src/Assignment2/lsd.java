@@ -91,16 +91,17 @@ public class lsd {
     public static void main(String[] args) {
      //      Integer[] arr = {1,6,9,2,13,11};
        //    Integer[] arr = {170, 45, 75, 90, 2, 802, 2, 66};
-       //    Integer[] arr = {33,1,0,3,13};
+           Integer[] arr = {1,8,7,4,2,9,10,0,1,6,7,8,2,4,2,1};
 
         //   LsdRadixSort(arr,arrayIntGetter,1,0);
-     //     arr = LsdRadixSort(arr, getInt,5,256;
+    // LsdRadixSort(arr, getInt,5,256);
+     msd.MsdRadixSort(arr, msd.getInt,5,256);
 
     //    String[] arr = {"b", "c", "e", "d", "f", "g", "ba" };
 
         //String[] arr = {"bbc", "xyz","abc","soulykun", "POMEGRANATE", "Dab", "aaage","abdeee", "aaabce", "ab", };
 
-    //    System.out.println(Arrays.toString(arr));
+       System.out.println(Arrays.toString(arr));
     }
 
 

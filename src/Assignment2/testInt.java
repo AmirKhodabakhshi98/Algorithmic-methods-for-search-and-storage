@@ -24,14 +24,19 @@ public class testInt {
         Integer[]arr=  new Integer[list.size()];
         list.toArray(arr);
 
-      //  arr= lsd.LsdRadixSort(arr,lsd.getInt,4,256);
-
-        msd.MsdRadixSort(arr,msd.getInt,4,256);
+        long start = System.currentTimeMillis();
+       // lsd.LsdRadixSort(arr,lsd.getInt,4,256);
+     //   msd.MsdRadixSort(arr,msd.getInt,4,256);
+        Arrays.sort(arr);
+        long end = System.currentTimeMillis();
+        long duration = end-start;
+        System.out.println("duration ms: " + duration);
+        System.out.println("duration s: " + duration/1000);
 
         for (int i=0; i<arr.length-1; i++){
             if (arr[i]>arr[i+1]){
                 System.out.println("unsorted");
-                System.out.println(arr[i] + "!=" + arr[i+1]);
+                System.out.println(arr[i] + " - " + arr[i+1]);
                 break;
             }
         }
@@ -44,20 +49,21 @@ public class testInt {
 
         //  msd.MsdRadixSort(arr,msd.getChar,1000,256);
 
-     //   String fileName = "files/MSD-INT.txt";
-     //   BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+        String fileName = "files/ArraySort-INT.txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
 
-  //      for (int i=0; i<arr.length-1; i++){
-            //    if (arr[i]>arr[i+1]){
-            //        System.out.println("unsorted");
-            //         System.out.println(i);
-            //          break;
-      //          int str1 = arr[i];
-       //         writer.write(str1 + "\n");
+       for (int i=0; i<arr.length-1; i++){
+                if (arr[i]>arr[i+1]) {
+                    System.out.println("unsorted");
+                    System.out.println(i);
+                    break;
+                }
+                int str1 = arr[i];
+              writer.write(str1 + "\n");
 
-      //  }
-     //       writer.close();
+        }
+           writer.close();
 
 
 
