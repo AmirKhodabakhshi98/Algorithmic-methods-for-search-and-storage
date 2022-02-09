@@ -12,39 +12,42 @@ public class lsd {
 
        T[] aux = input.clone();
 
-
+        // lsd - börja på slutet jobba dig till vänster
         for (int i = maxElemLength-1; i>=0; i--){
-            int[] count = new int[bitsPerDigit+2];
+
+            int[] count = new int[bitsPerDigit+2]; //+2 för o ha plats för -1:an
 
             // count frequencies
             for (int j=0; j<input.length; j++){
-                int digit = gbh.getDigit(input[j], i);
-               count[digit+2]+=1;
+                int digit = gbh.getDigit(input[j], i); //hämta värde
+                count[digit+2]+=1; //öka dess count
             }
 
-
             //compute cumulates
-            for (int n=0; n<bitsPerDigit; n++){
+            for (int n=0; n<=bitsPerDigit; n++){
                 count[n+1] += count[n];
             }
 
-
+            //write to aux
             for (int x=0; x<input.length; x++){
-                int digit = gbh.getDigit(input[x], i)+1; //hämtar värdet för digit
+                int digit = gbh.getDigit(input[x], i) + 1; //hämtar värdet för digit
                 int position = count[digit];  //hämtar nuvarande position som ska skrivas till
                 aux[position] = input[x]; //sätter till positionen
                 count[digit]++;
             }
-
 
             for (int y = 0; y<input.length; y++){
                 input[y] = aux[y];
             }
 
         }
-
-
     }
+
+
+
+
+
+
 
 
 

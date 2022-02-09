@@ -29,9 +29,9 @@ public class testString {
         list.toArray(arr);
 
         long startTime = System.currentTimeMillis();
-    //    lsd.LsdRadixSort(arr,lsd.getChar,528,256);
+        lsd.LsdRadixSort(arr,lsd.getChar,528,256);
     //    msd.MsdRadixSort(arr,msd.getChar,528,256);
-        Arrays.sort(arr);
+      //  Arrays.sort(arr);
         long endTime = System.currentTimeMillis();
 
         long duration = (endTime-startTime);

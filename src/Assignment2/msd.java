@@ -7,28 +7,30 @@ public class msd {
 
 
 
-
+    //d = den position i sträng vi e i
     static  <T> void  Sort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int bitsInDigit, T[] aux, int lo, int hi, int d){
-
+        System.out.println(" + ");
         if (hi <= lo){
             return;
         }
 
         int[] count = new int[bitsInDigit+2]; //+2 för o ha plats för -1 i getdigit
 
+        //frequency
         for (int i=lo; i <= hi; i++){
             int digit = gbh.getDigit(input[i],d);
             count[digit+2] += 1;
         }
 
+        //cumulatives
         for (int r=0; r<bitsInDigit+1;r++){
             count[r+1] += count[r];
         }
 
-
+        //
         for (int i = lo; i<=hi; i++){
-            int digit = gbh.getDigit(input[i],d)+1;
-            int position = count[digit];
+            int digit = gbh.getDigit(input[i],d)+1; //hämtar värdet för digit
+            int position = count[digit]; //hämtar nuvarande position som ska skrivas till
             aux[position] = input[i];
             count[digit]++;
         }
@@ -38,7 +40,7 @@ public class msd {
             input[i] = aux[i-lo];
         }
 
-
+        //inkl hi
         for (int r=0; r<bitsInDigit; r++){
             Sort(input,gbh,maxElemLength,bitsInDigit,aux,lo+count[r],lo+count[r+1]-1,d+1);
         }
@@ -51,15 +53,10 @@ public class msd {
 
     static <T> void MsdRadixSort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int bitsInDigit) {
 
-
         T[] aux = input.clone();
         Sort(input,gbh,maxElemLength,bitsInDigit,aux,0,input.length-1,0);
 
     }
-
-
-
-
 
 
 
@@ -73,8 +70,6 @@ public class msd {
             else                 {
                 return -1; }
         }
-
-
     };
 
 
