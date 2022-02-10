@@ -7,8 +7,22 @@ duration s: 39
 
 MSD STRING
 msd.MsdRadixSort(arr,msd.getInt,4,256);
-duration ms: 10242
-duration s: 10
+duration ms: 11414
+duration s: 11
+
+Insertion String20
+duration ms: 2214
+duration s: 2
+
+Insertion 15
+duration ms: 3141
+duration s: 3
+
+insertion 25
+duration ms: 2015
+duration s: 2
+
+
 
 ARRAYSORT String
 duration ms: 1379
@@ -26,6 +40,11 @@ msd.MsdRadixSort(arr,msd.getInt,4,256);
 duration ms: 2728
 duration s: 2
 
+Insertion Int
+duration ms: 1735
+duration s: 1
+
+
 ARRAYSORT INT
 duration ms: 2826
 duration s: 2
@@ -41,24 +60,3 @@ duration s: 2
 
 
 
-
-
-
-LSD STRING
-duration s: 39
-
-MSD STRING
-duration s: 10
-
-ARRAYSORT String
-duration s: 1
-
-
-LSD INT
-duration s: 3
-
-MSD INT
-duration s: 2
-
-ARRAYSORT INT
-duration s: 2

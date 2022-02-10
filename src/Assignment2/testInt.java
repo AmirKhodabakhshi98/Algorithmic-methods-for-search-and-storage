@@ -45,20 +45,16 @@ public class testInt {
 
 
 
-       // arr= lsd.LsdRadixSort(arr,lsd.getChar,1000,256);
+   //     String fileName = "files/InsertionINT.txt";
+   //    BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
-        //  msd.MsdRadixSort(arr,msd.getChar,1000,256);
 
-     //   String fileName = "files/ArraySort-INT.txt";
-    //    BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-
-//
     //   for (int i=0; i<arr.length-1; i++){
 
-          //      int str1 = arr[i];
-        //      writer.write(str1 + "\n");
-
-   //     }
+     //           int str1 = arr[i];
+     //        writer.write(str1 + "\n");
+//
+     //  }
     //       writer.close();
 
 

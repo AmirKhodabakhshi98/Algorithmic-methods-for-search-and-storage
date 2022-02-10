@@ -29,8 +29,8 @@ public class testString {
         list.toArray(arr);
 
         long startTime = System.currentTimeMillis();
-        lsd.LsdRadixSort(arr,lsd.getChar,528,256);
-    //    msd.MsdRadixSort(arr,msd.getChar,528,256);
+      //  lsd.LsdRadixSort(arr,lsd.getChar,528,256);
+        msd.MsdRadixSort(arr,msd.getChar,528,256);
       //  Arrays.sort(arr);
         long endTime = System.currentTimeMillis();
 
@@ -51,15 +51,15 @@ public class testString {
 
 
 
-     //   String fileName = "files/.txt";
-     //  BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+    //    String fileName = "files/InsertionString25.txt";
+    //   BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
 
-     //   for (int i=0; i<arr.length-1; i++){
-     //       String str1 = arr[i];
-     //      writer.write(str1 + "\n");
+    //   for (int i=0; i<arr.length-1; i++){
+    //        String str1 = arr[i];
+    //      writer.write(str1 + "\n");
     //    }
-   //     writer.close();
+    //   writer.close();
 
 
     }

@@ -6,15 +6,81 @@ public class msd {
 
 
 
+    interface compare<T> {
+        boolean isPrevBiggerThanNext(T elem, T elem2, int startPos);
+    }
+
+
+    static compare<String> getStringCompare = new compare<String>() {
+        public boolean isPrevBiggerThanNext(String prev, String next, int startPos) {
+
+            try {
+
+
+                if (prev.substring(startPos - 1).compareTo(next.substring(startPos - 1)) > 0) {
+                    //  if (prev.compareTo(next)>0){
+                    return true;
+                }
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println(prev);
+                System.out.println(next);
+                System.out.println(startPos);
+                System.exit(0);
+            }
+            return false;
+        }
+    };
+
+    static compare<Integer> getIntCompare = new compare<Integer>() {
+        public boolean isPrevBiggerThanNext(Integer prev, Integer next, int startPos) {
+
+            if (prev>next){
+                return true;
+            }
+             return false;
+
+        }
+    };
+
+
+    static <T> void insertionSort(T[]input, GetDigitHandle<T> gbh, int d, int arrStart, int arrEnd){
+        compare comp = null;
+        if (gbh==getChar){
+            comp = getStringCompare;
+        }else if (gbh==getInt){
+            comp = getIntCompare;
+        }
+
+        for (int i = arrStart+1; i<=arrEnd; i++){
+
+            int j=i;
+
+           while (j>arrStart && comp.isPrevBiggerThanNext(input[j-1],input[j],d)){
+
+                T temp = input[j-1];
+                input[j-1] = input[j];
+                input[j] = temp;
+                j--;
+            }
+        }
+
+    }
+
+
+
 
     //d = den position i sträng vi e i
-    static  <T> void  Sort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int bitsInDigit, T[] aux, int lo, int hi, int d){
-        System.out.println(" + ");
+    static  <T> void  Sort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int alphabetSize, T[] aux, int lo, int hi, int d){
+
         if (hi <= lo){
             return;
         }
+        if (hi-lo <=20){
+            insertionSort(input,gbh,d,lo,hi);
+            return;
+        }
 
-        int[] count = new int[bitsInDigit+2]; //+2 för o ha plats för -1 i getdigit
+        int[] count = new int[alphabetSize+2]; //+2 för o ha plats för -1 i getdigit
 
         //frequency
         for (int i=lo; i <= hi; i++){
@@ -23,7 +89,7 @@ public class msd {
         }
 
         //cumulatives
-        for (int r=0; r<bitsInDigit+1;r++){
+        for (int r=0; r<alphabetSize+1;r++){
             count[r+1] += count[r];
         }
 
@@ -41,8 +107,8 @@ public class msd {
         }
 
         //inkl hi
-        for (int r=0; r<bitsInDigit; r++){
-            Sort(input,gbh,maxElemLength,bitsInDigit,aux,lo+count[r],lo+count[r+1]-1,d+1);
+        for (int r=0; r<alphabetSize; r++){
+            Sort(input,gbh,maxElemLength,alphabetSize,aux,lo+count[r],lo+count[r+1]-1,d+1);
         }
 
 
@@ -51,10 +117,10 @@ public class msd {
     }
 
 
-    static <T> void MsdRadixSort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int bitsInDigit) {
+    static <T> void MsdRadixSort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int alphabetSize) {
 
         T[] aux = input.clone();
-        Sort(input,gbh,maxElemLength,bitsInDigit,aux,0,input.length-1,0);
+        Sort(input,gbh,maxElemLength,alphabetSize,aux,0,input.length-1,0);
 
     }
 
@@ -100,7 +166,6 @@ public class msd {
         //     arr = LsdRadixSort(arr, getInt,5,0);
 
 
-     //   String[] arr = {"bbc", "xyz","abc","shells","she","soulykun", "POMEGRANATE", "Dab", "aaage","abdeee", "aaabce", "ab", };
        // String[] arr = {"seashells", "she","sells","sea","she","shore", "shells", "surely" };
         String[] arr = {"b", "c", "e", "d", "f", "g", "ba", "bca" };
          MsdRadixSort(arr, getChar,11,256);
