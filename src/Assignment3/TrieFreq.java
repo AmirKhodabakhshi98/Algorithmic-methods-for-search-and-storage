@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class Trie {
+public class TrieFreq {
 
 
     private static int alphabetSize = 26;
@@ -13,12 +13,12 @@ public class Trie {
     private int hi = 122;
     private Node root = new Node();
 
-    public Trie(int lo, int hi){
+    public TrieFreq(int lo, int hi){
         this.lo=lo;
         alphabetSize = hi-lo+1;
     }
 
-    public Trie(){
+    public TrieFreq(){
 
     };
 
@@ -110,7 +110,7 @@ public class Trie {
             wordArray[i] = wordArray[i].replaceAll("[^a-z]","");
         }
 
-        Trie t = new Trie();
+        TrieFreq t = new TrieFreq();
         for (String s:wordArray){
             t.put(s);
         }
