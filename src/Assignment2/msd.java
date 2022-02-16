@@ -17,7 +17,8 @@ public class msd {
             try {
 
 
-                if (prev.substring(startPos - 1).compareTo(next.substring(startPos - 1)) > 0) {
+           //     if (prev.substring(startPos - 1).compareTo(next.substring(startPos - 1)) > 0) {
+                if (prev.substring(startPos).compareTo(next.substring(startPos)) > 0) {
                     //  if (prev.compareTo(next)>0){
                     return true;
                 }
@@ -55,25 +56,42 @@ public class msd {
 
             int j=i;
 
-           while (j>arrStart && comp.isPrevBiggerThanNext(input[j-1],input[j],d)){
+
+
+           while (j>arrStart &&
+                   isPrevBiggerThanNext(input[j-1],input[j],gbh,d)){
 
                 T temp = input[j-1];
                 input[j-1] = input[j];
                 input[j] = temp;
                 j--;
             }
+       }
+    }
+    
+
+    static <T> boolean isPrevBiggerThanNext(T prev, T next, GetDigitHandle<T> gbh, int d){
+
+       // int d = d;
+
+        while (gbh.getDigit(prev, d) == gbh.getDigit(next, d)) {
+
+            d++;
+
+            if (gbh.getDigit(prev,d)==-1 && gbh.getDigit(next,d)==-1){
+                return false;
+            }
         }
 
+        return gbh.getDigit(prev, d) > gbh.getDigit(next, d);
     }
-
-
 
 
     //d = den position i sträng vi e i
     static  <T> void  Sort(T[]input, GetDigitHandle<T>gbh, int maxElemLength, int alphabetSize, T[] aux, int lo, int hi, int d){
 
         if (hi <= lo){
-            return;
+     //       return;
         }
         if (hi-lo <=20){
             insertionSort(input,gbh,d,lo,hi);

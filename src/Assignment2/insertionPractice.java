@@ -25,7 +25,7 @@ public class insertionPractice {
         insertion(arr,1,2);
         System.out.println(Arrays.toString(arr));
 
-        String s1 = "b";
+        String s1 = "aa";
         String s2 = "a";
 
         System.out.println(s1.compareTo(s2));
