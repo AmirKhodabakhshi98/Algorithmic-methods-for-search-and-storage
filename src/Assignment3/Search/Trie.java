@@ -20,9 +20,6 @@ public class Trie {
         alphabetSize = hi-lo+1;
     }
 
-    public Trie(){
-
-    };
 
 
     private static class Node
@@ -85,12 +82,114 @@ public class Trie {
     }
 
 
+    public Trie(){
+
+    };
+
+    private ArrayList<Integer> searchTwoWords(ArrayList<String> searchList){
+        String s1 = searchList.get(0);
+        String s2 = searchList.get(1);
+        ArrayList<Integer> s1Results = get(s1);
+        ArrayList<Integer> s2Results = get(s2);
+        ArrayList<Integer> matches = new ArrayList<>();
+
+        int s1Index=0;
+        int s2Index=0;
+
+        while (s1Index < s1Results.size() && s2Index < s2Results.size()){
+
+            if (s1Results.get(s1Index) < s2Results.get(s2Index)){
+
+                s1Index = skipTo(s1Results, s2Results.get(s2Index));
+
+            }else {
+
+                s2Index = skipTo(s2Results, s1Results.get(s1Index));
+            }
+
+            //finished searching smaller array, avoid out of bounds
+            if (s1Index== -1 || s2Index == -1){
+                break;
+            }
+
+            if (s1Results.get(s1Index).equals(s2Results.get(s2Index))){
+
+                matches.add(s1Results.get(s1Index));
+                s1Index++;
+            }
+        }
+
+        return matches;
+
+    }
 
 
+    private ArrayList<Integer> searchMultipleWords(ArrayList<String> searchList) {
+        int k = searchList.size();
+
+        ArrayList<Integer> t0 = get(searchList.get(0));
+
+        ArrayList<Integer> results = new ArrayList<>();
+
+        ArrayList<ArrayList<Integer>> lw = new ArrayList<ArrayList<Integer>>();
+        for (int i=0; i<searchList.size();i++){
+            lw.add(get(searchList.get(i))); //funkar, hämtar alla instancer för varje ord.
+        }
+
+        int d= get(searchList.get(0)).get(0);
+        int matches = 0;
+
+        int count = 0;
+        for (int j=0; j<t0.size(); j++){
+            matches = 0;
+            d = t0.get(j);
+//öka d på nåt sätt.
+            for (int w=0; w<lw.size();w++){
+
+                int skipTo = skipTo(lw.get(w),d);
+                if (skipTo == -1){
+                    continue;
+                }
+                int f = get(searchList.get(w)).get(skipTo);
+
+                if (f==d){
+                    matches++;
+                }else {
+                    d = f;
+                    matches = 0;
+                }
+            }
+            if (matches==k){
+                results.add(d);
+            }
+            count++;
+
+        }
+
+        return results;
+    }
+
+
+
+
+
+    private int skipTo(ArrayList<Integer> list, int searchValue){
+
+        for (int i=0; i<list.size(); i++){
+            if (list.get(i)==searchValue){
+                return i;
+            }
+            if (list.get(i)>searchValue){
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     public static void main(String[] args) throws IOException {
-   //     String filelocation = "files/oldhouse.txt";
-           String filelocation = "files/bible-washed.txt";
+        String filelocation = "files/oldhouse.txt";
+     //      String filelocation = "files/bible-washed.txt";
         BufferedReader br = new BufferedReader(new FileReader(filelocation));
         StringBuilder sb = new StringBuilder();
         String str = "";
@@ -116,20 +215,26 @@ public class Trie {
 
 
         while (true){
-            String key = JOptionPane.showInputDialog("searchword");
+            String key = JOptionPane.showInputDialog("write words pls & thanks");
+
+
             if (key==null){
                 break;
             }
-            ArrayList<Integer> results = trie.get(key);
+
+            String[] keyWords = key.split(" ");
+
+            ArrayList<String> searchWords = new ArrayList<>(Arrays.asList(keyWords));
+
+            ArrayList<Integer> results = trie.searchMultipleWords(searchWords);
 
             StringBuilder sb1 =  new StringBuilder();
-            sb1.append(key).append(": ");
+
             for (int j=0; j<results.size(); j++){
                 sb1.append(results.get(j)).append(", ");
             }
-            end = System.currentTimeMillis();
 
-            System.out.println(sb1.toString() + "duration: " );
+            System.out.println(sb1.toString());
 
         }
 
