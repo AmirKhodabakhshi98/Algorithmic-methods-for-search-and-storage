@@ -86,6 +86,229 @@ public class Trie {
 
     };
 
+    private ArrayList<Integer> searchMultipleWords(ArrayList<String> searchWords){
+
+        //get index for every word
+        ArrayList<ArrayList<Integer>> indexOfEachWordList = new ArrayList<ArrayList<Integer>>();
+
+        for (int i=0; i<searchWords.size();i++){
+            indexOfEachWordList.add(get(searchWords.get(i)));
+        }
+
+
+        ArrayList<Integer> results = new ArrayList<>();
+
+        int candidateIndex = get(searchWords.get(0)).get(0);
+
+        int matches;
+
+        while (candidateIndex != -1) {
+            matches = 0;
+
+            for (int i = 0; i < indexOfEachWordList.size(); i++) {
+
+                int nextIndex = skipTo(indexOfEachWordList.get(i), candidateIndex); //skip past evertyhing less than candidateIndex
+
+                if (nextIndex == candidateIndex) {
+                    matches++;
+                } else {
+                    candidateIndex = nextIndex;
+                    break;
+                }
+            }
+
+            if (matches == searchWords.size()) {
+
+                results.add(candidateIndex);
+
+                candidateIndex = skipTo(get(searchWords.get(0)),candidateIndex+1);
+
+            }
+        }
+
+        return results;
+    }
+
+
+
+
+    private int skipTo(ArrayList<Integer> list, int searchValue){
+
+        for (int i=0; i<list.size(); i++){
+
+            if (list.get(i)==searchValue){
+                return list.get(i);
+            }
+            if (list.get(i)>searchValue){
+                return list.get(i);
+            }
+        }
+
+        return -1;
+    }
+
+    public static void main(String[] args) throws IOException {
+
+
+         String filelocation = "files/oldhouse.txt";
+      //  String filelocation = "files/bible-washed.txt";
+        BufferedReader br = new BufferedReader(new FileReader(filelocation));
+        StringBuilder sb = new StringBuilder();
+        String str = "";
+
+        long start = System.currentTimeMillis();
+
+        Trie trie = new Trie();
+        int index = 1;
+
+        while ((str=br.readLine()) != null){
+
+            String[] arr = str.split(" ");
+
+            for (int i = 0; i< arr.length; i++){
+                trie.put(arr[i],index);
+            }
+            index++;
+        }
+        br.close();
+        long end = System.currentTimeMillis();
+        long duration = end-start;
+        System.out.println("build duration: " + duration);
+
+
+
+        while (true){
+            String key = JOptionPane.showInputDialog("write words pls & thanks");
+
+            if (key==null){
+                break;
+            }
+
+            String[] keyWords = key.split(" ");
+
+            ArrayList<String> searchWords = new ArrayList<>(Arrays.asList(keyWords));
+
+            ArrayList<Integer> results = trie.searchMultipleWords(searchWords);
+
+            System.out.println(results.toString());
+        }
+
+    }
+
+
+
+}
+
+
+
+
+/*
+    private ArrayList<Integer> searchMultipleWords(ArrayList<String> searchList) {
+        int k = searchList.size();
+
+        ArrayList<Integer> candidates0 = get(searchList.get(0));
+
+        ArrayList<Integer> results = new ArrayList<>();
+
+        ArrayList<ArrayList<Integer>> lw = new ArrayList<ArrayList<Integer>>();
+        for (int i=0; i<searchList.size();i++){
+            lw.add(get(searchList.get(i))); //funkar, hämtar alla instancer för varje ord.
+        }
+
+        int d= get(searchList.get(0)).get(0);
+        int matches = 0;
+
+        int count = 0;
+        for (int j=0; j<candidates0.size(); j++){
+            matches = 0;
+            d = candidates0.get(j);
+
+            //öka d på nåt sätt.
+            for (int w=0; w<lw.size();w++){
+
+                int skipTo = skipTo(lw.get(w),d);
+                if (skipTo == -1){
+                    continue;
+                }
+                int f = get(searchList.get(w)).get(skipTo);
+
+                if (f==d){
+                    matches++;
+                }else {
+                    d = f;
+                    matches = 0;
+                }
+            }
+            if (matches==k){
+                results.add(d);
+            }
+            count++;
+
+        }
+
+        return results;
+    }
+
+
+
+
+
+    private ArrayList<Integer> searchMultipleWords(ArrayList<String> searchList) {
+        int k = searchList.size();
+
+        ArrayList<Integer> candidatesList = get(searchList.get(0));
+
+        ArrayList<Integer> results = new ArrayList<>();
+
+        ArrayList<ArrayList<Integer>> allIndexesList = new ArrayList<ArrayList<Integer>>();
+        for (int i=0; i<searchList.size();i++){
+            allIndexesList.add(get(searchList.get(i))); //funkar, hämtar alla instancer för varje ord.
+        }
+
+        int candidate= get(searchList.get(0)).get(0);
+        int matches = 0;
+
+        int count = 0;
+        for (int j=0; j<candidatesList.size(); j++){
+            matches = 0;
+          //  candidate = candidatesList.get(j);
+
+            //öka candidate på nåt sätt.
+            for (int w=0; w<allIndexesList.size();w++){
+
+                int skipTo = skipTo(allIndexesList.get(w),candidate);
+                if (skipTo == -1){
+                    continue;
+                }
+                int nextIndex = get(searchList.get(w)).get(skipTo);
+
+                if (nextIndex==candidate){
+                    matches++;
+
+                }else {
+                    candidate = nextIndex;
+                 //   matches = 0;
+                    break;
+                }
+            }
+            if (matches==k){
+                results.add(candidate);
+                candidate = candidatesList.get(j+1);
+
+            //    candidate+=2;
+              //  candidate = skipTo(candidatesList,candidate);
+            }
+            count++;
+
+        }
+
+        return results;
+    }
+
+ */
+
+
+/*
     private ArrayList<Integer> searchTwoWords(ArrayList<String> searchList){
         String s1 = searchList.get(0);
         String s2 = searchList.get(1);
@@ -122,124 +345,4 @@ public class Trie {
         return matches;
 
     }
-
-
-    private ArrayList<Integer> searchMultipleWords(ArrayList<String> searchList) {
-        int k = searchList.size();
-
-        ArrayList<Integer> t0 = get(searchList.get(0));
-
-        ArrayList<Integer> results = new ArrayList<>();
-
-        ArrayList<ArrayList<Integer>> lw = new ArrayList<ArrayList<Integer>>();
-        for (int i=0; i<searchList.size();i++){
-            lw.add(get(searchList.get(i))); //funkar, hämtar alla instancer för varje ord.
-        }
-
-        int d= get(searchList.get(0)).get(0);
-        int matches = 0;
-
-        int count = 0;
-        for (int j=0; j<t0.size(); j++){
-            matches = 0;
-            d = t0.get(j);
-//öka d på nåt sätt.
-            for (int w=0; w<lw.size();w++){
-
-                int skipTo = skipTo(lw.get(w),d);
-                if (skipTo == -1){
-                    continue;
-                }
-                int f = get(searchList.get(w)).get(skipTo);
-
-                if (f==d){
-                    matches++;
-                }else {
-                    d = f;
-                    matches = 0;
-                }
-            }
-            if (matches==k){
-                results.add(d);
-            }
-            count++;
-
-        }
-
-        return results;
-    }
-
-
-
-
-
-    private int skipTo(ArrayList<Integer> list, int searchValue){
-
-        for (int i=0; i<list.size(); i++){
-            if (list.get(i)==searchValue){
-                return i;
-            }
-            if (list.get(i)>searchValue){
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public static void main(String[] args) throws IOException {
-        String filelocation = "files/oldhouse.txt";
-     //      String filelocation = "files/bible-washed.txt";
-        BufferedReader br = new BufferedReader(new FileReader(filelocation));
-        StringBuilder sb = new StringBuilder();
-        String str = "";
-
-        Trie trie = new Trie();
-        long start = System.currentTimeMillis();
-        int index = 1;
-        while ((str=br.readLine()) != null){
-            sb = new StringBuilder();
-            sb.append(str);
-            str = sb.toString();
-            String[] arr = str.split(" ");
-            for (int i = 0; i< arr.length; i++){
-                trie.put(arr[i],index);
-            }
-            index++;
-        }
-        br.close();
-        long end = System.currentTimeMillis();
-        long duration = end-start;
-        System.out.println("build duration: " + duration);
-
-
-
-        while (true){
-            String key = JOptionPane.showInputDialog("write words pls & thanks");
-
-
-            if (key==null){
-                break;
-            }
-
-            String[] keyWords = key.split(" ");
-
-            ArrayList<String> searchWords = new ArrayList<>(Arrays.asList(keyWords));
-
-            ArrayList<Integer> results = trie.searchMultipleWords(searchWords);
-
-            StringBuilder sb1 =  new StringBuilder();
-
-            for (int j=0; j<results.size(); j++){
-                sb1.append(results.get(j)).append(", ");
-            }
-
-            System.out.println(sb1.toString());
-
-        }
-
-    }
-
-
-
-}
+*/
