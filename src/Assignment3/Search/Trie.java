@@ -20,24 +20,27 @@ public class Trie {
         alphabetSize = hi-lo+1;
     }
 
+    public Trie(){
 
+    };
 
     private static class Node
     {
 
-   //     private int index;
         private ArrayList<Integer> indexList = new ArrayList<>();
+
         private Node[] next = new Node[alphabetSize];
 
         private void addIndex(int index){
             boolean exists = false;
-            for (int i=0; i<indexList.size(); i++){
-                if (index == indexList.get(i)){
-                    exists=true;
+
+            for (Integer savedIndex : indexList) {
+                if (index == savedIndex) {
+                    exists = true;
                     break;
                 }
             }
-            if (exists == false){
+            if (!exists){
                 indexList.add(index);
             }
         }
@@ -46,19 +49,21 @@ public class Trie {
 
     public void put(String key, int index)
     {
-        root = put(root,key,0, index); //dvs lägger till nya barn till root när den skickar tbx.
+        root = put(root,key,0, index);
     }
 
     public Node put(Node node, String key, int pos, int index){
         if (node==null){
             node = new Node();
         }
+
         if (pos==key.length()){
             node.addIndex(index);
             return node;
         }
+
         int c = key.charAt(pos) - lo;
-        node.next[c] = put(node.next[c], key, pos+1, index );
+        node.next[c] = put(node.next[c], key, pos+1, index);
         return node;
     }
 
@@ -82,9 +87,7 @@ public class Trie {
     }
 
 
-    public Trie(){
 
-    };
 
     private ArrayList<Integer> searchMultipleWords(ArrayList<String> searchWords){
 
@@ -94,7 +97,6 @@ public class Trie {
         for (int i=0; i<searchWords.size();i++){
             indexOfEachWordList.add(get(searchWords.get(i)));
         }
-
 
         ArrayList<Integer> results = new ArrayList<>();
 
@@ -153,7 +155,6 @@ public class Trie {
          String filelocation = "files/oldhouse.txt";
       //  String filelocation = "files/bible-washed.txt";
         BufferedReader br = new BufferedReader(new FileReader(filelocation));
-        StringBuilder sb = new StringBuilder();
         String str = "";
 
         long start = System.currentTimeMillis();
