@@ -14,20 +14,21 @@ public class suffixArrayMaker {
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String str = br.readLine();
 
-        String[] subStringArray = new String[str.length()];
+        suffixClass[] suffArray = new suffixClass[str.length()];
+
 
 
         for (int i=0; i<str.length(); i++){
-            subStringArray[i] = str.substring(i);
+            suffArray[i] = new suffixClass(i,str.substring(i));
         }
 
-        suffixRadixMsd.MsdRadixSort(subStringArray, suffixRadixMsd.getChar,256);
+        suffixRadixMsd.MsdRadixSort(suffArray, suffixRadixMsd.getChar,256);
 
        // System.out.println(Arrays.toString(suffArray));
 
         int[] indexArr = new int[str.length()];
-        for (int i=0; i<subStringArray.length; i++){
-            System.out.println(subStringArray[i]);
+        for (int i=0; i<suffArray.length; i++){
+            indexArr[i] = suffArray[i].getIndex();
 
         }
 

@@ -98,11 +98,11 @@ public class suffixRadixMsd {
 
 
 
-    static GetDigitHandle<String> getChar = new GetDigitHandle<String>() {
-        public int getDigit(String elem, int i) {
+    static GetDigitHandle<suffixClass> getChar = new GetDigitHandle<suffixClass>() {
+        public int getDigit(suffixClass elem, int i) {
 
-            if (i < elem.length()) {
-                return elem.charAt(i);
+            if (i < elem.getSuffix().length()) {
+                return elem.getSuffix().charAt(i);
             } else {
                 return -1;
             }
