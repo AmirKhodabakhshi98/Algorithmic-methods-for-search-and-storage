@@ -185,7 +185,9 @@ public class msd {
 
 
        // String[] arr = {"seashells", "she","sells","sea","she","shore", "shells", "surely" };
-        String[] arr = {"b", "c", "e", "d", "f", "g", "ba", "bca" };
+      //  String[] arr = {"b", "c", "e", "d", "f", "g", "ba", "bca" };
+      //  String[] arr = {"attcatg", "ttcatg", "tcatg", "catg", "atg", "tg", "g", "" };
+        String[] arr = {"mississippi", "ississippi", "ssissippi", "sissippi", "issippi", "ssippi", "sippi", "ippi", "ppi", "pi", "i" };
          MsdRadixSort(arr, getChar,11,256);
 
         System.out.println(Arrays.toString(arr));
