@@ -45,7 +45,7 @@ public class suffixRadixMsd {
     static void  Sort(int[]input, int alphabetSize, int[] aux, int lo, int hi, int d,  String str){
 
 
-        if (hi-lo <100){
+        if (hi-lo < 100){
             insertionSort(input,d,lo,hi, str);
             return;
         }
@@ -100,10 +100,10 @@ public class suffixRadixMsd {
 
 
 
-        static int getDigit(int elem, int i, String str) {
+        static int getDigit(int elem, int d, String str) {
 
-            if (elem+i < str.length()) {
-                return str.charAt(elem + i);
+            if (elem+d < str.length()) {
+                return str.charAt(elem + d);
             } else {
                 return -1;
             }

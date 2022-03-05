@@ -41,64 +41,66 @@ public class suffixArrayMaker {
         int low = 0;
         int high = length-1;
         int mid;
-        int cmp = 0;
+        int cmp;
 
         while (low <= high){
             mid = Math.floorDiv((low+high),2);
             cmp =compare(key, suffixArray[mid]);
 
-            if(cmp == 0){
-                if (mid-1 >= 0){
-                    if (compare(key,suffixArray[mid-1]) == 0){
-                        high = mid-1;
-                        continue;
-                    }
-                }
-                return mid;
-            }
 
-            else if (cmp < 0){
+            if (cmp < 0){
                 high = mid-1;
             }
             else if (cmp > 0 ){
                 low = mid+1;
+            }
+
+            else {
+                if (mid-1 >= 0
+                        && compare(key,suffixArray[mid-1]) == 0){
+                        high = mid-1;
+                }
+                else {
+                    return mid;
+                }
             }
         }
 
         return -1;
     }
 
+
     static int lastHitBinarySearch(String key){
 
         int low = 0;
         int high = length-1;
         int mid;
-        int cmp = 0;
+        int cmp;
 
         while (low<=high){
 
             mid = Math.floorDiv((low+high),2);
             cmp = compare(key, suffixArray[mid]);
 
-            if (cmp == 0){
-                if (mid+1 < length){
-                    if (compare(key,suffixArray[mid+1]) == 0){
-                        low = mid + 1;
-                        continue;
-                    }
 
-                }
-                return mid;
-            }
-            else if (cmp < 0){
+            if (cmp < 0){
                 high = mid-1;
             }
             else if (cmp > 0){
                 low = mid+1;
             }
 
-        }
+            else {
+                if (mid+1 < length &&
+                        compare(key,suffixArray[mid+1]) == 0) {
 
+                    low = mid + 1;
+                }
+                else {
+                    return mid;
+                }
+            }
+        }
 
         return -1;
     }
@@ -129,6 +131,7 @@ public class suffixArrayMaker {
     }
 
 
+    //prints substring from startindex until up to 10 chars after
     static void print(int substringStart, String key){
 
 
@@ -169,8 +172,8 @@ public class suffixArrayMaker {
 
 
     public static void main(String[] args) throws IOException {
-          String filename = "files/bible-oneline.txt";
-       // String filename = "files/suffixEasy.txt";
+        //  String filename = "files/bible-oneline.txt";
+        String filename = "files/suffixEasy.txt";
 
         makeSuffArray(filename);
         userInterface();
@@ -182,96 +185,3 @@ public class suffixArrayMaker {
 
 }
 
-
-//BACKUP
-
-/*
-    //returns first and last occurence of key
-    //[0] first
-    //[1] last
-    static int[] binarySearch(String key){
-        int[] hits = new int[2];
-
-        int low = 0;
-        int high = length-1;
-        int mid;
-        int cmp = 0;
-        int cmpNeighbour;
-
-        while (low <= high){
-            mid = Math.floorDiv((low+high),2);
-            cmp = compare(key, suffixArray[mid]);
-
-            if (cmp==0){
-                if (mid-1 >= 0){
-                    if (compare(key,suffixArray[mid-1]) == 0){
-                        high = mid-1;
-                    }
-                }
-            }
-
-
-            if (cmp<0){
-                high = mid-1;
-            }
-            else if (cmp>0){
-                low = mid+1;
-            }
-      //      else return mid;
-
-        }
-
-
-        return hits;
-    }
-
-
- */
-
-
-
-
-/*
-    static ArrayList<Integer> findNeighbours(String key, int suffixArrayPos){
-        ArrayList<Integer> hits = new ArrayList<>();
-
-        int cmp;
-        int forward = 1;
-        int backward = -1;
-
-
-        while (true){
-            if (suffixArrayPos+backward < 0){
-                break;
-            }
-            cmp = compare(key,suffixArray[suffixArrayPos + backward]);
-            if (cmp==0){
-                hits.add(suffixArray[suffixArrayPos + backward]);
-                backward--;
-            }else break;
-        }
-
-        hits.add(suffixArray[suffixArrayPos]);
-
-
-        while (true){
-
-            if (suffixArrayPos+forward >= suffixArray.length){
-                break;
-            }
-
-            cmp = compare(key,suffixArray[suffixArrayPos+forward]);
-
-            if (cmp == 0){
-
-                hits.add(suffixArray[suffixArrayPos+forward]);
-                forward++;
-
-            }else break;
-
-        }
-
-
-        return hits;
-    }
-*/
