@@ -7,20 +7,52 @@ public class suffixRadixMsd {
 
 
 
+    static void insertionSort(int[]input,  int d, int arrStart, int arrEndInclusive, String str){
+
+        for (int i = arrStart+1; i<=arrEndInclusive; i++){
+
+            int j=i;
+
+            while (j>arrStart &&
+                    isPrevBiggerThanNextNew(input[j-1],input[j],d, str)){
+
+                int temp = input[j-1];
+                input[j-1] = input[j];
+                input[j] = temp;
+                j--;
+            }
+        }
+    }
+
+
+    static boolean isPrevBiggerThanNextNew(int prev, int next, int d, String str){
+
+        while (getDigit(prev, d, str) == getDigit(next, d, str)) {
+
+            d++;
+
+            if (getDigit(prev,d, str) == -1 &&
+                    getDigit(next,d, str) == -1){
+
+                return false;
+            }
+        }
+
+        return getDigit(prev, d, str) > getDigit(next, d, str);
+    }
 
     //d = den position i sträng vi e i
     static void  Sort(int[]input, int alphabetSize, int[] aux, int lo, int hi, int d,  String str){
 
 
-        //if (hi-lo <500){
-          //  System.out.println("insertion");
-        //    insertionSort(input,d,lo,hi, str);
-        //    return;
-        //}
-
-        if (hi <= lo){
+        if (hi-lo <100){
+            insertionSort(input,d,lo,hi, str);
             return;
         }
+
+      //  if (hi <= lo){
+       //     return;
+      //  }
 
         int[] count = new int[alphabetSize+2]; //+2 för o ha plats för -1 i getdigit
 
