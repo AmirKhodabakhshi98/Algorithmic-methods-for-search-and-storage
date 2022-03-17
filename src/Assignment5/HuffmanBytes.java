@@ -1,28 +1,32 @@
 package Assignment5;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Huffman {
+public class HuffmanBytes {
 
     static PriorityQueue<Node> queue;
-    static Map<Character, String> huffmanCodesMap;
+    static Map<Byte, String> huffmanCodesMap;
     static Node root;
-    static String input;
+    static byte[] input;
 
     private static class Node implements Comparable<Node> {
-        char c;
-        int freq = 0;
+
+        byte b;
+        int freq;
         Node left;
         Node right;
+        boolean isLeaf = false;
 
-        public Node(char c, int freq ){
-            this.c = c;
+
+        public Node(Byte b, int freq ){
+            this.b = b;
             this.freq = freq;
+            isLeaf = true;
 
         }
 
@@ -41,40 +45,29 @@ public class Huffman {
 
 
     //reads a file and creates a priority queue for it's char based on their freq
-    static void createPriorityQueue(String filename) throws IOException {
+    static void readInputAndCreatePriorityQueue(String filename) throws IOException {
 
-
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-
-        StringBuilder sb = new StringBuilder();
-
-        Map<Character,Integer> freqMap = new HashMap<Character, Integer>();
-
+        Map<Byte,Integer> freqMap = new HashMap<Byte, Integer>();
         queue = new PriorityQueue<>();
 
-        while ((input = br.readLine()) != null){
-            sb.append(input);
-        }
+         input = Files.readAllBytes(Path.of(filename));
 
-        input = sb.toString();
+        for (int i=0; i<input.length; i++){
 
-        for (int i=0; i<input.length(); i++){
+            if (!freqMap.containsKey(input[i])){
 
-            char c = input.charAt(i);
-
-            if (!freqMap.containsKey(c)){
-                freqMap.put(c,1);
+                freqMap.put(input[i],1);
             }
-            else freqMap.put(c, freqMap.get(c)+1);
+            else freqMap.put(input[i], freqMap.get(input[i])+1);
         }
 
-        for (Map.Entry<Character,Integer> entry: freqMap.entrySet()) {
+
+        for (Map.Entry<Byte,Integer> entry: freqMap.entrySet()) {
             Node node = new Node(entry.getKey(), entry.getValue());
             queue.add(node);
         }
 
-        System.out.println("Frequency map:" +  freqMap.entrySet());
-
+       // System.out.println("Frequency map:" +  freqMap.entrySet());
 
     }
 
@@ -99,6 +92,7 @@ public class Huffman {
 
         StringBuilder code = new StringBuilder();
         preOrderTraversal(root, code, 0);
+
         System.out.println("Huffman codes: " + huffmanCodesMap.entrySet());
 
     }
@@ -110,8 +104,8 @@ public class Huffman {
             return;
         }
 
-        if (node.c != '\0'){
-            huffmanCodesMap.put(node.c, code.toString());
+        if (node.isLeaf){
+            huffmanCodesMap.put(node.b, code.toString());
 
         }
 
@@ -126,10 +120,11 @@ public class Huffman {
     }
 
 
+
     static void print(){
-        int length = input.length();
-
-
+        StringBuilder sb = new StringBuilder();
+        int length = input.length;
+        System.out.println(Integer.toBinaryString(length));
 
     }
 
@@ -138,9 +133,13 @@ public class Huffman {
       //  String filename = "files/huffAbra.txt";
         //  String filename = "files/bible-en.txt";
         String filename = "files/abra.txt";
-        createPriorityQueue(filename);
+        readInputAndCreatePriorityQueue(filename);
         createHuffmanTree();
         encodeTree();
+        print();
+
+
+
 
 
     }
