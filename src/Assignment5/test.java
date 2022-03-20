@@ -6,18 +6,27 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class test {
 
-    static int increaseBitPos2(int bitPos){
-        return (bitPos+1) % 8;
+    static int increaseBitPos(int bitPos){
+
+        if (bitPos == 0 ){
+            System.out.println(7);
+            return 7;
+        }
+        return (bitPos-1);
     }
 
 
 
-    static int increaseBitPos(int bitPos){
-        return (bitPos+1) % 4;
+    static int increaseBitPos3(int bitPos){
+        System.out.println();
+        int t = (bitPos-1 % 4);
+        System.out.println(t);
+        return (bitPos-1) % 4;
     }
 
 
@@ -29,15 +38,27 @@ public class test {
     }
     public static void main(String[] args) throws IOException {
 
+
+
+     Path path = Paths.get("files/huff/test.huff");
+       byte[] arr = Files.readAllBytes(path);
+
+        for (byte b:
+             arr) {
+            System.out.println(b);
+        }
+        System.out.println(arr.length);
+
+  /*
         String code = "11001100";
         byte b = 0;
-        int bitpos = 0;
+        int bitpos = 7;
 
         for (int i=0; i<code.length(); i++){
             int bit = Character.getNumericValue(code.charAt(i));
 
             if (bit==1){
-                b = setBit(b,bit);
+                b = setBit(b,bitpos);
                 bitpos = increaseBitPos(bitpos);
             }
             else if (bit == 0){
@@ -45,12 +66,16 @@ public class test {
 
 
             }
-            if (bitpos == 0 ){
+            if (bitpos == 7 ){
                 System.out.println(String.valueOf(b));
-                //b=0;
+                b=0;
             }
+
         }
 
+        byte c = 0;
+        c= setBit(c,7);
+   //     System.out.println(c);
       //  System.out.println(b);
 
 

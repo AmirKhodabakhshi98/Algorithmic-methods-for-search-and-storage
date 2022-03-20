@@ -1,11 +1,9 @@
 package Assignment5;
 
 import java.io.*;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -172,45 +170,52 @@ public class HuffmanBytes {
 
 
     static void printBytes() throws IOException {
-        String outFile = "files/test.huff";
+        String outFile = "files/huff/test.huff";
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 
         printSize(writer);
 
         byte b = 0;
-        int bitPos = 0;
+        int bitPos = 7;
 
+        int counter = 0;
         for (int c = 0; c<256; c++){
 
-            if (!huffmanCodesMap.containsKey((byte)c)){
-                while (!huffmanCodesMap.containsKey((byte)c) && c<256){
-                 //   bitPos++; //print single 0-bit
+            if (!huffmanCodesMap.containsKey((byte)c)){ //CHECKED
+                while (!huffmanCodesMap.containsKey((byte)c) && c<256){ //CHECKED
+
                     c++;
-                    bitPos = increaseBitPos(bitPos);
-                    if (bitPos== 0){
-                        writer.write(b);
+                    bitPos = decreaseBitPos(bitPos);
+                    if (bitPos== 7){
+
+                        printer(writer,b);
+
+
                         b = 0;
                     }
                 }
             }
 
-            if (huffmanCodesMap.containsKey((byte)c)){
+            if (huffmanCodesMap.containsKey((byte)c)){ //CHECKED
 
-                String code = huffmanCodesMap.get((byte)c);
+                String code = huffmanCodesMap.get((byte)c); //CHECKED
 
                 //unary
-                for (int i=0; i<code.length();i++){
+                for (int i=0; i<code.length();i++){ //CHECKED
+
                     b = setBit(b,bitPos);
-                    bitPos = increaseBitPos(bitPos);
-                    if (bitPos==0){
-                        writer.write(b);
+                    bitPos = decreaseBitPos(bitPos);
+
+                    if (bitPos==7){
+                        printer(writer,b);
                         b=0;
                     }
                 }
 
-                bitPos = increaseBitPos(bitPos);
-                if (bitPos==0){ //0-bit after unary
-                    writer.write(b);
+                bitPos = decreaseBitPos(bitPos);//0-bit after unary
+
+                if (bitPos==7){
+                    printer(writer,b);
                     b=0;
                 }
 
@@ -220,35 +225,63 @@ public class HuffmanBytes {
 
                     if (bit==1){
                         b = setBit(b,bitPos);
-                        bitPos = increaseBitPos(bitPos);
+                        bitPos = decreaseBitPos(bitPos);
+
 
                     }else if (bit == 0){
-                        bitPos = increaseBitPos(bitPos);
+                        bitPos = decreaseBitPos(bitPos);
                     }
 
-                    if (bitPos == 0 ){
-                        writer.write(b);
+                    if (bitPos == 7 ){
+                        printer(writer,b);
                         b=0;
                     }
-
                 }
-
-
-
-            //    sb.append((huffmanCodesMap.get((byte)c)));
-
             }
 
         }
+
+
+        for (int i=0; i<input.length; i++){
+
+            String code = huffmanCodesMap.get(input[i]);
+
+            for (int j=0; j<code.length(); j++){
+                int bit = Character.getNumericValue(code.charAt(j));
+                    if (bit==0){
+                        bitPos = decreaseBitPos(bitPos);
+
+                    }else if (bit==1){
+
+                        setBit(b,bitPos);
+                        bitPos = decreaseBitPos(bitPos);
+                    }
+
+                    if (bitPos==7){
+                        printer(writer,b);
+                        b=0;
+                    }
+            }
+
+        }
+
+        System.out.println(counter);
 
         writer.close();
 
     }
 
+    static void printer(Writer writer, byte b) throws IOException {
+
+        writer.write(b);
+    }
 
 
-    static int increaseBitPos(int bitPos){
-        return (bitPos+1) % 8;
+    static int decreaseBitPos(int bitPos){
+        if (bitPos == 0){
+            return 7;
+        }
+        return bitPos-1;
     }
 
 
@@ -288,7 +321,7 @@ public class HuffmanBytes {
 
     public static void main(String[] args) throws IOException {
       //  String filename = "files/huffAbra.txt";
-        //  String filename = "files/bible-en.txt";
+       //   String filename = "files/bible-en.txt";
         String filename = "files/abra.txt";
         readInputAndCreatePriorityQueue(filename);
         createHuffmanTree();
