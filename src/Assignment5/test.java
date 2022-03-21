@@ -39,17 +39,13 @@ public class test {
     public static void main(String[] args) throws IOException {
 
 
-
-     Path path = Paths.get("files/huff/test.huff");
+     Path path = Paths.get("files/huff/abracomp.huff");
        byte[] arr = Files.readAllBytes(path);
 
-        for (byte b:
-             arr) {
-            System.out.println(b);
-        }
         System.out.println(arr.length);
 
-  /*
+ /*
+
         String code = "11001100";
         byte b = 0;
         int bitpos = 7;

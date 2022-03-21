@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -83,7 +85,7 @@ public class HuffmanBytes {
             queue.add(node);
         }
 
-        root = new Node(queue.poll(), queue.poll());
+        root = new Node(queue.poll(), queue.poll()); //FIXA ISSUE DÄR D BA FINNS 1 TECKEN.
 
     }
 
@@ -169,8 +171,11 @@ public class HuffmanBytes {
 
 
 
-    static void printBytes() throws IOException {
-        String outFile = "files/huff/test.huff";
+/*
+    static void printBytesOLD() throws IOException {
+        ArrayList<Integer> list = new ArrayList<>();
+
+        String outFile = "files/huff/abracomp.huff";
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 
         printSize(writer);
@@ -183,14 +188,12 @@ public class HuffmanBytes {
 
             if (!huffmanCodesMap.containsKey((byte)c)){ //CHECKED
                 while (!huffmanCodesMap.containsKey((byte)c) && c<256){ //CHECKED
-
+                    list.add(0);
                     c++;
                     bitPos = decreaseBitPos(bitPos);
                     if (bitPos== 7){
 
                         printer(writer,b);
-
-
                         b = 0;
                     }
                 }
@@ -202,7 +205,7 @@ public class HuffmanBytes {
 
                 //unary
                 for (int i=0; i<code.length();i++){ //CHECKED
-
+                    list.add(1);
                     b = setBit(b,bitPos);
                     bitPos = decreaseBitPos(bitPos);
 
@@ -213,7 +216,7 @@ public class HuffmanBytes {
                 }
 
                 bitPos = decreaseBitPos(bitPos);//0-bit after unary
-
+                list.add(0);
                 if (bitPos==7){
                     printer(writer,b);
                     b=0;
@@ -226,9 +229,10 @@ public class HuffmanBytes {
                     if (bit==1){
                         b = setBit(b,bitPos);
                         bitPos = decreaseBitPos(bitPos);
-
+                        list.add(1);
 
                     }else if (bit == 0){
+                        list.add(0);
                         bitPos = decreaseBitPos(bitPos);
                     }
 
@@ -245,15 +249,16 @@ public class HuffmanBytes {
         for (int i=0; i<input.length; i++){
 
             String code = huffmanCodesMap.get(input[i]);
-
+            System.out.println(code);
             for (int j=0; j<code.length(); j++){
                 int bit = Character.getNumericValue(code.charAt(j));
                     if (bit==0){
+                        list.add(0);
                         bitPos = decreaseBitPos(bitPos);
 
                     }else if (bit==1){
-
-                        setBit(b,bitPos);
+                        list.add(1);
+                        b = setBit(b,bitPos);
                         bitPos = decreaseBitPos(bitPos);
                     }
 
@@ -265,18 +270,171 @@ public class HuffmanBytes {
 
         }
 
-        System.out.println(counter);
+      //  System.out.println(counter);
 
         writer.close();
 
+
+        for (int e:
+             list) {
+            System.out.print(e);
+
+        }
+
+
     }
 
-    static void printer(Writer writer, byte b) throws IOException {
+*/
 
+    static void printBytes() throws IOException {
+        ArrayList<Integer> list = new ArrayList<>();
+
+        String outFile = "files/huff/abracomp.huff";
+          BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+
+
+        File file = new File("files/huff/abracomp.huff");
+       // OutputStream writer = new FileOutputStream(file);
+
+        printSize(writer);
+        debugRead();
+
+        byte b = 0;
+        int bitPos = 7;
+
+        int counter = 0;
+        for (int c = 0; c<256; c++){
+
+            if (!huffmanCodesMap.containsKey((byte)c)){ //CHECKED
+                    list.add(0);
+                    bitPos = decreaseBitPos(bitPos);
+                    if (bitPos== 7){
+                        counter++;
+                        writer.write(b);
+                        writer.flush();
+                        b = 0;
+                        debugRead();
+                    }
+            }
+
+            if (huffmanCodesMap.containsKey((byte)c)){ //CHECKED
+
+                String code = huffmanCodesMap.get((byte)c); //CHECKED
+
+                //unary
+                for (int i=0; i<code.length();i++){ //CHECKED
+                    list.add(1);
+                    b = setBit(b,bitPos);
+                    bitPos = decreaseBitPos(bitPos);
+
+                    if (bitPos==7){
+                        counter++;
+                        writer.write(b);
+                        writer.flush();
+                        b=0;
+                        debugRead();
+                    }
+                }
+
+                bitPos = decreaseBitPos(bitPos);//0-bit after unary
+                list.add(0);
+                if (bitPos==7){
+                    counter++;
+                    writer.write(b);
+                    writer.flush();
+                    b=0;
+                    debugRead();
+                }
+
+                //print huffcode
+                for (int i = 0; i<code.length(); i++){
+                    int bit = Character.getNumericValue(code.charAt(i));
+
+                    if (bit==1){
+                        b = setBit(b,bitPos);
+                        bitPos = decreaseBitPos(bitPos);
+                        list.add(1);
+
+                    }else if (bit == 0){
+                        list.add(0);
+                        bitPos = decreaseBitPos(bitPos);
+                    }
+
+                    if (bitPos == 7 ){
+                        counter++;
+                        writer.write(b);
+                        writer.flush();
+                        b=0;
+                        debugRead();
+                    }
+                }
+            }
+
+        }
+
+
+        for (int i=0; i<input.length; i++){
+
+            String code = huffmanCodesMap.get(input[i]);
+
+            for (int j=0; j<code.length(); j++){
+                int bit = Character.getNumericValue(code.charAt(j));
+                if (bit==0){
+                    list.add(0);
+                    bitPos = decreaseBitPos(bitPos);
+
+                }else if (bit==1){
+                    list.add(1);
+                    b = setBit(b,bitPos);
+                    bitPos = decreaseBitPos(bitPos);
+                }
+
+                if (bitPos==7){
+                    counter++;
+                    writer.write(b);
+                    writer.flush();
+                    debugRead();
+                    b=0;
+                }
+            }
+
+        }
+
+          System.out.println("counter: " + counter);
+
+        writer.close();
+        debugRead();
+/*
+
+        for (int e:
+                list) {
+            System.out.print(e);
+
+        }
+
+
+ */
+
+    }
+/*
+    static void printer(BufferedWriter writer, byte b) throws IOException {
         writer.write(b);
     }
 
 
+    static void printer(OutputStream writer, byte b) throws IOException {
+        writer.write(b);
+    }
+
+
+ */
+
+    static void debugRead() throws IOException {
+        Path path = Paths.get("files/huff/abracomp.huff");
+        byte[] arr = Files.readAllBytes(path);
+        System.out.println(arr.length);
+
+    }
     static int decreaseBitPos(int bitPos){
         if (bitPos == 0){
             return 7;
@@ -296,6 +454,14 @@ public class HuffmanBytes {
 
 
 
+    static void printSize(OutputStream writer) throws IOException {
+        byte[] sizeArray = ByteBuffer.allocate(4).putInt(input.length).array();
+
+        for (byte b:
+                sizeArray) {
+            writer.write(b);
+        }
+    }
 
     static void printSize(BufferedWriter writer) throws IOException {
         byte[] sizeArray = ByteBuffer.allocate(4).putInt(input.length).array();
@@ -303,6 +469,7 @@ public class HuffmanBytes {
         for (byte b:
                 sizeArray) {
             writer.write(b);
+            writer.flush();
         }
     }
 
@@ -320,9 +487,9 @@ public class HuffmanBytes {
 
 
     public static void main(String[] args) throws IOException {
-      //  String filename = "files/huffAbra.txt";
+        String filename = "files/huffAbra.txt";
        //   String filename = "files/bible-en.txt";
-        String filename = "files/abra.txt";
+    //    String filename = "files/huff/easyinput.txt";
         readInputAndCreatePriorityQueue(filename);
         createHuffmanTree();
         encodeTree();
