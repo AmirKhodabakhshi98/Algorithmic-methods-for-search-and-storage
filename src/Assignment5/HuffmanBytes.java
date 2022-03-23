@@ -26,12 +26,14 @@ public class HuffmanBytes {
         boolean isLeaf = false;
 
 
+        //leaf constructor
         public Node(Byte b, int freq ){
             this.b = b;
             this.freq = freq;
             isLeaf = true;
         }
 
+        //parent constructor
         public Node(Node left, Node right){
             this.left = left;
             this.right = right;
@@ -50,7 +52,7 @@ public class HuffmanBytes {
         Map<Byte,Integer> freqMap = new HashMap<Byte, Integer>();
         queue = new PriorityQueue<>();
 
-         input = Files.readAllBytes(Path.of(filename));
+        input = Files.readAllBytes(Path.of(filename));
 
         for (int i=0; i<input.length; i++){
 
@@ -74,15 +76,12 @@ public class HuffmanBytes {
 
     static void createHuffmanTree(){
 
-
         while (queue.size()>2){
-            Node left = queue.poll();
-            Node right = queue.poll();
-            Node node = new Node(left, right);
+            Node node = new Node(queue.poll(), queue.poll());
             queue.add(node);
         }
 
-        root = new Node(queue.poll(), queue.poll()); //FIXA ISSUE DÄR D BA FINNS 1 TECKEN.
+        root = new Node(queue.poll(), queue.poll());
 
     }
 
@@ -91,9 +90,29 @@ public class HuffmanBytes {
         huffmanCodesMap = new HashMap<>();
 
         StringBuilder code = new StringBuilder();
+
         preOrderTraversal(root, code, 0);
 
+      //  concatTest(root,"");
+
         System.out.println("Huffman codes: " + huffmanCodesMap.entrySet());
+
+    }
+
+
+    static void concatTest(Node node, String code){
+
+        if (node==null){
+            return;
+        }
+
+        if (node.isLeaf){
+            huffmanCodesMap.put(node.b, code);
+        }
+
+        concatTest(node.left, code.concat("0"));
+
+        concatTest(node.right, code.concat("1"));
 
     }
 
@@ -106,15 +125,14 @@ public class HuffmanBytes {
 
         if (node.isLeaf){
             huffmanCodesMap.put(node.b, code.toString());
-
         }
 
         code.append("0");
         preOrderTraversal(node.left, code, code.length());
 
         code.setLength(codeLength);
-        code.append("1");
 
+        code.append("1");
         preOrderTraversal(node.right, code, code.length());
 
     }
@@ -126,14 +144,13 @@ public class HuffmanBytes {
     static void printBytes(String outpath) throws IOException {
 
       //  String outFile = "files/huff/abracomp.huff";
-      //    BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+      //  BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 
 
         File file = new File(outpath);
         OutputStream writer = new FileOutputStream(file);
 
         printSize(writer);
-
 
         byte b = 0;
         int bitPos = 7;
@@ -242,8 +259,6 @@ public class HuffmanBytes {
 
 
 
-
-
     static void printSize(OutputStream writer) throws IOException {
         byte[] sizeArray = ByteBuffer.allocate(4).putInt(input.length).array();
 
@@ -255,29 +270,24 @@ public class HuffmanBytes {
 
 
 
-    static StringBuilder inputToHuffman(StringBuilder sb){
-
-        for (int i=0; i<input.length; i++){
-            sb.append(huffmanCodesMap.get(input[i]));
-            sb.append("\n");
-        }
-
-        return sb;
-    }
-
 
 
     public static void main(String[] args) throws IOException {
      //   String filename = "files/huffAbra.txt";
           String filename = "files/bible-en.txt";
-    //    String filename = "files/huff/easyinput.txt";
+      //  String filename = "files/huff/easyinput.txt";
         readInputAndCreatePriorityQueue(filename);
+        long start = System.currentTimeMillis();
+
         createHuffmanTree();
         encodeTree();
+
+
    //     print();
-        printBytes("files/huff/bibleCOMP.huff");
+        printBytes("files/huff/bibcomp.huff");
 
-
+        long end = System.currentTimeMillis();
+        System.out.println(end-start);
 
 
     }
