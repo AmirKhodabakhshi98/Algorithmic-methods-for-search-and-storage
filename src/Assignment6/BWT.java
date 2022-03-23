@@ -1,8 +1,15 @@
 package Assignment6;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Map;
 
 public class BWT {
 
@@ -12,21 +19,15 @@ public class BWT {
 
     static int[] suffixArrayMaker(byte[] input) throws IOException {
 
-        int[] suffixarray = byteSuffixArray.makeSuffArray(input);
+        int[] suffixArray = new int[input.length+1];
 
-        /*
-        for (int start:
-             suffixarray) {
-
-            for (int i = start; i<input.length; i++){
-                System.out.print((char)input[i]);
-            }
-            System.out.println();
-
+        for (int i=0; i< suffixArray.length; i++){
+            suffixArray[i] = i;
         }
-        */
+        byteSort.MsdRadixSort(suffixArray,256, input);
 
-        return suffixarray;
+
+        return suffixArray;
     }
 
     static byte[] bwt(byte[]input, int[] suffixArray){
@@ -47,7 +48,8 @@ public class BWT {
         return transform;
     }
 
-    static void moveToFront(byte[] bwt){
+
+    static byte[] moveToFront(byte[] bwt){
        // byte[] mtfList = new byte[256];
         byte[] output = new byte[bwt.length];
 
@@ -60,44 +62,14 @@ public class BWT {
 
             int pos = mtfList.get(bwt[i]);
             output[i] = (byte) pos;
-            System.out.println(output[i]);
+         //   System.out.println(output[i]);
         }
 
 
 
-      /*  int pos;
-        int outPos = 0;
-
-        for (byte item: bwt) {
-            pos = findItem(item,mtfList); // hittar var den finns i listan
-            output[outPos++] = (byte) pos; // skriver ut värdet.
-
-            move(mtfList, pos);
-
-
-        }
-*/
+        return output;
     }
 
-    /*
-    static byte[] move(byte[] unsorted, int pos){
-
-
-        return null;
-    }
-    static int findItem(byte item, byte[] mtfList){
-
-        for (int i=0; i<mtfList.length;i++){
-            if (item==mtfList[i]){
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-
-*/
 
 
 
@@ -108,10 +80,38 @@ public class BWT {
     public static void main(String[] args) throws IOException {
         String file1 = "files/bwt/abra.txt";
         String file2 = "files/bwt/banana.txt";
-        byte[] input = Files.readAllBytes(Path.of(file1));
+        String file3 = "files/bible-oneline.txt";
+
+        long start = System.currentTimeMillis();
+
+        byte[] input = Files.readAllBytes(Path.of(file3));
         int[] suffixarray = suffixArrayMaker(input);
+
         byte[] bwtArr = bwt(input,suffixarray);
-        moveToFront(bwtArr);
+
+        byte[] mtfArr = moveToFront(bwtArr);
+
+        System.out.println("mtf: " + Arrays.toString(mtfArr));
+
+        Map<Byte,String> huffManCodesMap = HuffmanCode.getHuffmanCode(mtfArr);
+        System.out.println("huffmancodes: " + huffManCodesMap.toString());
+
+        long end = System.currentTimeMillis();
+        long duration = end-start;
+        System.out.println("durrrrr: " + duration);
+
+
+        File outFile = new File("files/bwt/abraCOMP");
+        OutputStream writer = new FileOutputStream(outFile);
+
+        Print.printFile(writer,input,I, huffManCodesMap,mtfArr);
+
+
+
+
+
+
+
     }
 
 }

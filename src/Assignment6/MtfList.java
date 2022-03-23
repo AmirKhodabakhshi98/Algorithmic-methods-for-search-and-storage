@@ -34,6 +34,7 @@ public class MtfList {
     }
 
 
+    //behövs inte egentligen
     protected byte get(int pos){
         if (pos==0){
             return head.b;
@@ -60,13 +61,13 @@ public class MtfList {
     protected int get(byte b){
         Node current = head;
         Node prev = null;
+
         int pos = 0;
         while (current.b != b){
             prev = current;
             current = current.next;
             pos++;
         }
-
 
         if (current!= head){
 

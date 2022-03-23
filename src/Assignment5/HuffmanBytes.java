@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class HuffmanBytes {
+class HuffmanBytes {
 
     static PriorityQueue<Node> queue;
     static Map<Byte, String> huffmanCodesMap;
@@ -167,6 +167,7 @@ public class HuffmanBytes {
 
                 String code = huffmanCodesMap.get((byte)c);
 
+                System.out.println(code);
                 //unary
                 for (int i=0; i<code.length();i++){
                     b = setBit(b,bitPos);
@@ -273,8 +274,8 @@ public class HuffmanBytes {
 
 
     public static void main(String[] args) throws IOException {
-     //   String filename = "files/huffAbra.txt";
-          String filename = "files/bible-en.txt";
+        String filename = "files/huffAbra.txt";
+       //   String filename = "files/bible-en.txt";
       //  String filename = "files/huff/easyinput.txt";
         readInputAndCreatePriorityQueue(filename);
         long start = System.currentTimeMillis();

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Huffman {
+public class OLDHuffman {
 
     static PriorityQueue<Node> queue;
     static Map<Character, String> huffmanCodesMap;

@@ -1,17 +1,17 @@
 package Assignment6;
 
-public class byteSort {
+class byteSort {
 
 
 
 
-    static void insertionSort(int[]input,  int d, byte[] str){
+    private static void insertionSort(int[]input,  int d, int arrStart, int arrEndInclusive,  byte[] str){
 
-        for (int i = 1; i< input.length; i++){
+        for (int i = arrStart+1; i<= arrEndInclusive; i++){
 
             int j=i;
 
-            while (j>0 &&
+            while (j>arrStart &&
                     isPrevBiggerThanNextNew(input[j-1],input[j],d, str)){
 
                 int temp = input[j-1];
@@ -23,7 +23,7 @@ public class byteSort {
     }
 
 
-    static boolean isPrevBiggerThanNextNew(int prev, int next, int d, byte[] str){
+    private static boolean isPrevBiggerThanNextNew(int prev, int next, int d, byte[] str){
 
         while (getDigit(prev, d, str) == getDigit(next, d, str)) {
 
@@ -38,7 +38,7 @@ public class byteSort {
 
         return getDigit(prev, d, str) > getDigit(next, d, str);
     }
-    static int getDigit(int elem, int d, byte[] str) {
+    private static int getDigit(int elem, int d, byte[] str) {
 
         if (elem+d < str.length) {
             return str[elem + d];
@@ -46,12 +46,12 @@ public class byteSort {
             return -1;
         }
     }
-}
 
 
-    /*
+
+
     //d = den position i sträng vi e i
-    static void  Sort(int[]input, int alphabetSize, int[] aux, int lo, int hi, int d,  String str){
+    private static void  Sort(int[]input, int alphabetSize, int[] aux, int lo, int hi, int d,  byte[] str){
 
 
         if (hi-lo < 100){
@@ -100,53 +100,15 @@ public class byteSort {
     }
 
 
-    static void MsdRadixSort(int[]input, int alphabetSize, String str) {
+    protected static void MsdRadixSort(int[]input, int alphabetSize, byte[] str) {
 
         int[] aux = input.clone();
         Sort(input,alphabetSize,aux,0,input.length-1,0,  str);
 
     }
-*/
+
+
+}
 
 
 
-
-
-
-/*
-    static void insertionSort(int[] input, int d, int arrStart, int arrEndInclusive, String str){
-
-
-        for (int i = arrStart+1; i<=arrEndInclusive; i++){
-
-            int j=i;
-
-           while (j>arrStart &&
-                   isPrevBiggerThanNextNew(input[j-1],input[j], d, str)){
-
-                int temp = input[j-1];
-                input[j-1] = input[j];
-                input[j] = temp;
-                j--;
-            }
-       }
-    }
-
-
-    static <T> boolean isPrevBiggerThanNextNew(int prev, int next, int d, String str){
-
-
-        while (getDigit(str.substring(prev), d) == getDigit(str.substring(next), d)) {
-
-            d++;
-
-            if (getDigit(str.substring(prev),d) == -1 &&
-                    getDigit(str.substring(next),d) == -1){
-
-                return false;
-            }
-        }
-
-        return getDigit(str.substring(prev), d) > getDigit(str.substring(next), d);
-    }
-*/
