@@ -131,6 +131,8 @@ class Print {
         }
         return b;
     }
+
+
     static int decreaseBitPos(int bitPos){
         if (bitPos == 0){
             return 7;

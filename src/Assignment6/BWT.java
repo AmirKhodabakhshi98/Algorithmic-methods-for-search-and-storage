@@ -30,6 +30,7 @@ public class BWT {
         return suffixArray;
     }
 
+
     static byte[] bwt(byte[]input, int[] suffixArray){
 
         byte[] transform = new byte[suffixArray.length-1]; //behöver inte plats för $
@@ -84,7 +85,7 @@ public class BWT {
 
         long start = System.currentTimeMillis();
 
-        byte[] input = Files.readAllBytes(Path.of(file3));
+        byte[] input = Files.readAllBytes(Path.of(file1));
         int[] suffixarray = suffixArrayMaker(input);
 
         byte[] bwtArr = bwt(input,suffixarray);

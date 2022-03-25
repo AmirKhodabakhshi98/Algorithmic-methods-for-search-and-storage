@@ -167,7 +167,7 @@ class HuffmanBytes {
 
                 String code = huffmanCodesMap.get((byte)c);
 
-                System.out.println(code);
+
                 //unary
                 for (int i=0; i<code.length();i++){
                     b = setBit(b,bitPos);
@@ -175,8 +175,8 @@ class HuffmanBytes {
                     b = checkForWrite(b,bitPos, writer);
                 }
 
-                bitPos = decreaseBitPos(bitPos);//0-bit after unary
-
+                //0-bit after unary
+                bitPos = decreaseBitPos(bitPos);
                 b = checkForWrite(b,bitPos, writer);
 
                 //print symbol codes
@@ -243,6 +243,7 @@ class HuffmanBytes {
         }
         return b;
     }
+
     static int decreaseBitPos(int bitPos){
         if (bitPos == 0){
             return 7;
@@ -251,9 +252,9 @@ class HuffmanBytes {
     }
 
 
-    static byte setBit(byte b, int pos){
+    static byte setBit(byte b, int bitPos){
 
-        b |= 1 << pos;
+        b |= 1 << bitPos;
 
         return b;
     }

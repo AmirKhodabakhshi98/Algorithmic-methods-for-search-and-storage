@@ -38,6 +38,7 @@ class byteSort {
 
         return getDigit(prev, d, str) > getDigit(next, d, str);
     }
+
     private static int getDigit(int elem, int d, byte[] str) {
 
         if (elem+d < str.length) {
