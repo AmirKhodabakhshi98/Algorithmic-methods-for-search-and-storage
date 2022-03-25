@@ -1,15 +1,13 @@
-package Assignment4;
+package Assignment6;
 
-import Assignment2.msd;
-
-public class suffixRadixMsd {
+class byteSort {
 
 
 
 
-    static void insertionSort(int[]input,  int d, int arrStart, int arrEndInclusive, String str){
+    private static void insertionSort(int[]input,  int d, int arrStart, int arrEndInclusive,  byte[] str){
 
-        for (int i = arrStart+1; i<=arrEndInclusive; i++){
+        for (int i = arrStart+1; i<= arrEndInclusive; i++){
 
             int j=i;
 
@@ -25,7 +23,7 @@ public class suffixRadixMsd {
     }
 
 
-    static boolean isPrevBiggerThanNextNew(int prev, int next, int d, String str){
+    private static boolean isPrevBiggerThanNextNew(int prev, int next, int d, byte[] str){
 
         while (getDigit(prev, d, str) == getDigit(next, d, str)) {
 
@@ -41,8 +39,20 @@ public class suffixRadixMsd {
         return getDigit(prev, d, str) > getDigit(next, d, str);
     }
 
+    private static int getDigit(int elem, int d, byte[] str) {
+
+        if (elem+d < str.length) {
+            return str[elem + d];
+        } else {
+            return -1;
+        }
+    }
+
+
+
+
     //d = den position i sträng vi e i
-    static void  Sort(int[]input, int alphabetSize, int[] aux, int lo, int hi, int d,  String str){
+    private static void  Sort(int[]input, int alphabetSize, int[] aux, int lo, int hi, int d,  byte[] str){
 
 
         if (hi-lo < 100){
@@ -91,7 +101,7 @@ public class suffixRadixMsd {
     }
 
 
-    static void MsdRadixSort(int[]input, int alphabetSize, String str) {
+    protected static void MsdRadixSort(int[]input, int alphabetSize, byte[] str) {
 
         int[] aux = input.clone();
         Sort(input,alphabetSize,aux,0,input.length-1,0,  str);
@@ -99,57 +109,7 @@ public class suffixRadixMsd {
     }
 
 
-
-        static int getDigit(int elem, int d, String str) {
-
-            if (elem+d < str.length()) {
-                return str.charAt(elem + d);
-            } else {
-                return -1;
-            }
-        }
-
-
-
-
 }
 
 
 
-/*
-    static void insertionSort(int[] input, int d, int arrStart, int arrEndInclusive, String str){
-
-
-        for (int i = arrStart+1; i<=arrEndInclusive; i++){
-
-            int j=i;
-
-           while (j>arrStart &&
-                   isPrevBiggerThanNextNew(input[j-1],input[j], d, str)){
-
-                int temp = input[j-1];
-                input[j-1] = input[j];
-                input[j] = temp;
-                j--;
-            }
-       }
-    }
-
-
-    static <T> boolean isPrevBiggerThanNextNew(int prev, int next, int d, String str){
-
-
-        while (getDigit(str.substring(prev), d) == getDigit(str.substring(next), d)) {
-
-            d++;
-
-            if (getDigit(str.substring(prev),d) == -1 &&
-                    getDigit(str.substring(next),d) == -1){
-
-                return false;
-            }
-        }
-
-        return getDigit(str.substring(prev), d) > getDigit(str.substring(next), d);
-    }
-*/

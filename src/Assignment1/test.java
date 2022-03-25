@@ -9,26 +9,15 @@ import java.util.Arrays;
 public class test {
 
     public static void main(String[] args) throws IOException {
-   //     String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\abba-1-97-101";
-    //   String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\abba-4-1630000000-1689999999";
-     //  String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\abba-1-0-255";
-      String file = "E:\\backup ssd\\downloads\\MAU HT 20\\algo search n storage\\test";
 
+        int length = 5;
+        String unary = String.format("%" + length + "s","").replace(' ','1');
 
-        InputStream is = new FileInputStream(file);
-        int byteread = -1;
+        //       String bits = String.format("%" + minBits + "s",  Integer.toBinaryString((input[i]))) //left pad with spaces to reach minbit
+        //              .replace(' ', '0'); //replace spaces with 0
+        //       sb.append(bits);
 
-        byte[] data = Files.readAllBytes(Paths.get(file));
-        System.out.println(data.length);
-
-
-        while ((byteread = is.read()) != -1){ //läser in den som positiv int. vkt angående hur
-            //d kmr sig att d skrivs "signed" o ser negativt ut vid skrivning men läses in positivt.
-            System.out.print(byteread + " ");
-        }
-
-
-
+        System.out.println(unary);
     }
 }
 
