@@ -79,13 +79,13 @@ public class BWT {
 
 
     public static void main(String[] args) throws IOException {
-        String file1 = "files/bwt/abra.txt";
-        String file2 = "files/bwt/banana.txt";
+       // String file1 = "files/bwt/abra.txt";
+      //  String file2 = "files/bwt/banana.txt";
         String file3 = "files/bible-oneline.txt";
 
         long start = System.currentTimeMillis();
 
-        byte[] input = Files.readAllBytes(Path.of(file1));
+        byte[] input = Files.readAllBytes(Path.of(file3));
         int[] suffixarray = suffixArrayMaker(input);
 
         byte[] bwtArr = bwt(input,suffixarray);
@@ -102,7 +102,7 @@ public class BWT {
         System.out.println("durrrrr: " + duration);
 
 
-        File outFile = new File("files/bwt/abraCOMP");
+        File outFile = new File("files/bwt/bibCOMP");
         OutputStream writer = new FileOutputStream(outFile);
 
         Print.printFile(writer,input,I, huffManCodesMap,mtfArr);
